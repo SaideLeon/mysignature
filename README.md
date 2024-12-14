@@ -1,6 +1,3 @@
-Atualizado o `README.md` com base nos códigos fornecidos:
-
-```markdown
 # MySignature
 
 MySignature é uma ferramenta simples para calcular o preço ideal de assinatura de serviços ou produtos com base em:
@@ -18,7 +15,7 @@ A aplicação inclui uma interface web que exibe um gráfico de preços simulado
 - **Estilização**: TailwindCSS
 - **Comunicação entre frontend e backend**: Axios
 
----
+
 
 ## Instalação e Execução
 
