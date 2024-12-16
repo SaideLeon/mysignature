@@ -14,6 +14,7 @@ app.post('/calcular', (req, res) => {
     }
 
     const precoIdeal = (custoFixo / assinantes) * (1 + margemLucro / 100);
+    
     res.json({ precoIdeal: precoIdeal.toFixed(2) });
 });
 

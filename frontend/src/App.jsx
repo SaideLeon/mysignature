@@ -23,17 +23,37 @@ function App() {
             const response = await axios.post('http://localhost:3000/calcular', inputs);
             setPreco(response.data.precoIdeal);
 
-            const simulados = Array.from({ length: 10 }, (_, i) => ({
-                assinantes: Number(inputs.assinantes) * (i + 1),
-                preco: (inputs.custoFixo / (inputs.assinantes * (i + 1))) * (1 + inputs.margemLucro / 100),
-            }));
-            console.log("Dados Simulados:", simulados);
+            const precoIdeal = response.data.precoIdeal;
+            const simulados = Array.from({ length: 10 }, (_, i) => {
+                const assinantesAtuais = Number(inputs.assinantes) * (i + 1);
+                const precoAtual = (inputs.custoFixo / assinantesAtuais) * (1 + inputs.margemLucro / 100);
+                const totalGanho = assinantesAtuais * precoIdeal; // Cálculo do total ganho
+                return {
+                    assinantes: assinantesAtuais,
+                    preco: precoAtual,
+                    totalGanho, // Adiciona o campo
+                };
+            });
+
             setDadosSimulados(simulados);
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false);
         }
+    };
+
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="bg-white text-gray-800 shadow-lg rounded-lg p-3 border border-gray-200">
+                    <p className="text-sm font-semibold">{`📊 Assinantes: ${payload[0].payload.assinantes}`}</p>
+                    <p className="text-sm text-blue-600">{`💰 Preço: ${payload[0].payload.preco.toFixed(2)} MZN`}</p>
+                    <p className="text-sm text-green-600">{`🔢 Total Ganho: ${payload[0].payload.totalGanho.toFixed(2)} MZN`}</p>
+                </div>
+            );
+        }
+        return null;
     };
 
     return (
@@ -70,7 +90,7 @@ function App() {
                 </button>
             </div>
 
-            {preco && <h2 className="mt-6 text-xl font-semibold text-gray-800">Preço Ideal: R$ {preco}</h2>}
+            {preco && <h2 className="mt-6 text-xl font-semibold text-gray-800">Preço Ideal: {preco} MZN</h2>}
 
             {dadosSimulados.length > 0 ? (
                 <div className="mt-8 w-full max-w-4xl">
@@ -79,7 +99,7 @@ function App() {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="assinantes" />
                             <YAxis />
-                            <Tooltip />
+                            <Tooltip content={<CustomTooltip />} />
                             <Line type="monotone" dataKey="preco" stroke="#8884d8" />
                         </LineChart>
                     </ResponsiveContainer>
@@ -89,7 +109,6 @@ function App() {
             )}
         </div>
     );
-}3
+}
 
 export default App;
-
