@@ -24,14 +24,21 @@ function App() {
             setPreco(response.data.precoIdeal);
 
             const precoIdeal = response.data.precoIdeal;
+            
+            // Salva o preço ideal no Local Storage
+            localStorage.setItem('precoIdeal', precoIdeal);
+            localStorage.setItem('custo',inputs.custoFixo);
+
             const simulados = Array.from({ length: 10 }, (_, i) => {
                 const assinantesAtuais = Number(inputs.assinantes) * (i + 1);
                 const precoAtual = (inputs.custoFixo / assinantesAtuais) * (1 + inputs.margemLucro / 100);
                 const totalGanho = assinantesAtuais * precoIdeal; // Cálculo do total ganho
+                
+              
                 return {
                     assinantes: assinantesAtuais,
                     preco: precoAtual,
-                    totalGanho, // Adiciona o campo
+                 totalGanho, // Adiciona o campo
                 };
             });
 
@@ -47,9 +54,13 @@ function App() {
         if (active && payload && payload.length) {
             return (
                 <div className="bg-white text-gray-800 shadow-lg rounded-lg p-3 border border-gray-200">
-                    <p className="text-sm font-semibold">{`📊 Assinantes: ${payload[0].payload.assinantes}`}</p>
-                    <p className="text-sm text-blue-600">{`💰 Preço: ${payload[0].payload.preco.toFixed(2)} MZN`}</p>
-                    <p className="text-sm text-green-600">{`🔢 Total Ganho: ${payload[0].payload.totalGanho.toFixed(2)} MZN`}</p>
+                    <p className="text-sm font-semibold">{`👥  Assinantes: ${payload[0].payload.assinantes}`}</p>
+
+                    <p className="text-sm text-green-600">{`🏷️ Preço: ${localStorage.getItem('precoIdeal')} MZN`}</p>
+                                    <p className="text-sm text-red-600">{`⚙️ Custo fixo: ${localStorage.getItem('custo')} MZN`}</p>
+                                  <p className="text-sm text-green-600">{`💵  Total Ganho: ${payload[0].payload.totalGanho.toFixed(2)} MZN`}</p>
+                                      <p className="text-sm text-blue-600">
+                      {`💰 Preço ideal actual: ${payload[0].payload.preco.toFixed(2)} MZN`}</p>
                 </div>
             );
         }
