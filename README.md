@@ -37,7 +37,7 @@ A aplicação inclui uma interface web que exibe um gráfico de preços simulado
 
 3. Inicie o servidor:
    ```bash
-   node server.js
+   npm run start
    ```
    O servidor estará rodando em `http://localhost:3000`.
 
@@ -54,7 +54,7 @@ A aplicação inclui uma interface web que exibe um gráfico de preços simulado
 
 3. Inicie a aplicação React:
    ```bash
-   npm run dev
+   npm run start
    ```
    O frontend estará disponível em `http://localhost:5173` (porta padrão do Vite).
 
